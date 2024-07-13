@@ -6,7 +6,7 @@
 #ifndef UTECFLIX_MOVIESDATABSE_H
 #define UTECFLIX_MOVIESDATABSE_H
 
-#include "AlgoritmoDeBúsqueda.h"
+#include "SearchingAlgorithm.h"
 
 
 class MovieDatabase {
@@ -17,7 +17,9 @@ private:
     std::vector<Movie> watchLaterMovies;
 
     // Constructor privado
-    MovieDatabase() {}
+    MovieDatabase() {
+        loadMovies("mpst_full_data.csv");
+    }
 
 public:
     // Obtener la instancia de la base de datos
@@ -42,12 +44,15 @@ public:
     std::vector<Movie> search(const std::string& keyword) {
         return searchMovies(movies, keyword);
     }
+
     // Marcar una película como 'liked'
     void markAsLiked(const std::string& imdb_id) {
         for (auto& movie : movies) {
-            if (movie.imdb_id == imdb_id) {
-                movie.liked = true;
-                likedMovies.push_back(movie);
+            if (movie.imdb_id == imdb_id && movie.liked) {
+                if(std::find_if(likedMovies.begin(), likedMovies.end(), [&imdb_id](const Movie& m)
+                { return m.imdb_id == imdb_id; }) == likedMovies.end()) {
+                    likedMovies.push_back(movie);
+                }
                 return;
             }
         }
@@ -56,9 +61,11 @@ public:
     // Marcar una película como 'watch later'
     void markAsWatchLater(const std::string& imdb_id) {
         for (auto& movie : movies) {
-            if (movie.imdb_id == imdb_id) {
-                movie.watchLater = true;
-                watchLaterMovies.push_back(movie);
+            if (movie.imdb_id == imdb_id && movie.watchLater) {
+                if(std::find_if(watchLaterMovies.begin(), watchLaterMovies.end(), [&imdb_id](const Movie& m)
+                { return m.imdb_id == imdb_id; }) == watchLaterMovies.end()) {
+                    watchLaterMovies.push_back(movie);
+                }
                 return;
             }
         }

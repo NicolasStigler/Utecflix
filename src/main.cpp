@@ -1,36 +1,37 @@
 #include <iostream>
-#include <fstream>
-#include <vector>
-#include "AlgoritmoDeBúsqueda.h"
-#include "seleccion_y_likes.h"
+#include "SearchingAlgorithm.h"
+#include "MovieDatabase.h"
+#include "LikesNWatchLater.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        cerr << "Como usar: " << argv[0] << " <csv_name> <keyword>" << endl;
+    cout << "Iniciando el programa..." << endl;
+
+    string filename = "mpst_full_data.csv";
+    string keyword;
+
+    if (argc == 2) {
+        keyword = argv[1];
+    } else if (argc == 3) {
+        filename = argv[1];
+        keyword = argv[2];
+    } else {
+        cerr << "Uso incorrecto. Formato correcto: " << argv[0] << " [<nombre_archivo_csv>] <palabra_clave>" << endl;
         return 1;
     }
 
-    string filename = argv[1];
-    string keyword = argv[2];
+    MovieDatabase* db = MovieDatabase::getInstance();
+    db->loadMovies(filename);
 
-    vector<Movie> movies = readCSV(filename);
-
-    vector<Movie> results = searchMovies(movies, keyword);
-
-    ofstream outfile("output.txt");
+    auto results = db->search(keyword);
 
     if (results.empty()) {
-        outfile << "No se encontraron resultados." << endl;
+        cout << "No se encontraron resultados para la palabra clave: " << keyword << endl;
     } else {
-        outfile << "Resultados de \"" << keyword << "\":" << endl;
+        cout << "Resultados encontrados:" << endl;
         for (size_t i = 0; i < results.size(); ++i) {
-            outfile << "Opción " << i + 1 << ":" << endl;
-            outfile << "IMDB ID: " << results[i].imdb_id << endl;
-            outfile << "Title: " << results[i].title << endl;
-            outfile << "Tags: " << results[i].tags << endl;
-            outfile << "-----------------------------" << endl;
+            cout << i + 1 << ". " << results[i].title << " | Tags: " << results[i].tags << endl;
         }
 
         int choice;
@@ -38,25 +39,22 @@ int main(int argc, char* argv[]) {
         cin >> choice;
 
         if (choice > 0 && choice <= results.size()) {
-            displayMovieDetails(results[choice - 1]);
+            Movie& selectedMovie = results[choice - 1];
+            displayMovieDetails(selectedMovie); // Paso 2: Llamar a displayMovieDetails
+
+            // Paso 3: Actualizar MovieDatabase si es necesario
+            if (selectedMovie.liked) {
+                db->markAsLiked(selectedMovie.imdb_id);
+            }
+            if (selectedMovie.watchLater) {
+                db->markAsWatchLater(selectedMovie.imdb_id);
+            }
         } else {
             cout << "Opción inválida." << endl;
         }
     }
 
-    // Guardar las películas marcadas como 'liked' y 'watch later' en un archivo? o donde los guardo xdd
-    ofstream likedWatchLaterFile("liked_watch_later.txt");
-    for (const auto& movie : movies) {
-        if (movie.liked) {
-            likedWatchLaterFile << "Liked: " << movie.title << endl;
-        }
-        if (movie.watchLater) {
-            likedWatchLaterFile << "Watch Later: " << movie.title << endl;
-        }
-    }
-    likedWatchLaterFile.close();
-
-    outfile.close();
+    cout << "Programa finalizado." << endl;
 
     return 0;
 }
