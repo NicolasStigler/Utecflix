@@ -2,6 +2,7 @@
 #include "SearchingAlgorithm.h"
 #include "MovieDatabase.h"
 #include "LikesNWatchLater.h"
+#include "AlikeMovies.h"
 
 using namespace std;
 
@@ -23,6 +24,9 @@ int main(int argc, char* argv[]) {
 
     MovieDatabase* db = MovieDatabase::getInstance();
     db->loadMovies(filename);
+
+    showWatchLaterMovies();
+    showSimilarToLikedMovies();
 
     auto results = db->search(keyword);
 

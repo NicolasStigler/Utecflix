@@ -29,6 +29,17 @@ struct Movie {
             : imdb_id(id), title(t), plot_synopsis(ps), tags(tg), split(sp), synopsis_source(ss), liked(false), watchLater(false) {}
 };
 
+// Función auxiliar para dividir una cadena por un delimitador
+std::vector<std::string> split(const std::string& s, char delimiter) {
+    std::vector<std::string> tokens;
+    std::string token;
+    std::istringstream tokenStream(s);
+    while (std::getline(tokenStream, token, delimiter)) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
 // Funcion para quitar espacios antes o despues
 std::string trim(const std::string& str) {
     size_t first = str.find_first_not_of(' ');
@@ -114,6 +125,25 @@ std::vector<Movie> readCSV(const std::string& filename) {
     return movies;
 }
 
+// Función de búsqueda considerando tags enumerados por comas
+bool containsTag(const std::string& tags, const std::string& keyword) {
+    std::vector<std::string> tagList = split(tags, ',');
+    for (auto& tag : tagList) {
+        std::string tag_lower = tag;
+        std::string keyword_lower = keyword;
+        std::transform(tag_lower.begin(), tag_lower.end(), tag_lower.begin(), ::tolower);
+        std::transform(keyword_lower.begin(), keyword_lower.end(), keyword_lower.begin(), ::tolower);
+        // Trim leading and trailing spaces from each tag before comparison
+        tag_lower.erase(0, tag_lower.find_first_not_of(" \n\r\t"));
+        tag_lower.erase(tag_lower.find_last_not_of(" \n\r\t") + 1);
+        if (tag_lower == keyword_lower) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 // Funcion para la busqueda
 bool containsCaseInsensitive(const std::string& text, const std::string& keyword) {
     std::string text_lower = text;
@@ -125,15 +155,22 @@ bool containsCaseInsensitive(const std::string& text, const std::string& keyword
 
 // Funcion para buscar peliculas en las variables title, plot synopsis y tags
 std::vector<Movie> searchMovies(const std::vector<Movie>& movies, const std::string& keyword) {
+    std::vector<std::string> keywordParts = split(keyword, ' ');
     std::vector<Movie> results;
+
     for (const auto& movie : movies) {
-        if (containsCaseInsensitive(movie.title, keyword) ||
-            containsCaseInsensitive(movie.plot_synopsis, keyword) ||
-            containsCaseInsensitive(movie.tags, keyword)) {
+        bool found = false;
+        for (const auto& part : keywordParts) {
+            if (containsCaseInsensitive(movie.title, part) ||
+                containsCaseInsensitive(movie.plot_synopsis, part) ||
+                containsTag(movie.tags, part)) {
+                found = true;
+                break; // Si se encuentra alguna coincidencia, detener la búsqueda para esta película
+            }
+        }
+        if (found) {
             results.push_back(movie);
         }
-        if (results.size() >= 5)
-            break;  // Solo devolver los primeros 5 (referencia paginacion?)
     }
     return results;
 }
