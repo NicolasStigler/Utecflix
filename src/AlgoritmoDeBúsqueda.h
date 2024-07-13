@@ -13,7 +13,6 @@
 #include <regex>
 #include <algorithm>
 
-
 struct Movie {
     std::string imdb_id;
     std::string title;
@@ -21,6 +20,13 @@ struct Movie {
     std::string tags;
     std::string split;
     std::string synopsis_source;
+    bool liked;
+    bool watchLater;
+
+    Movie() : liked(false), watchLater(false) {}
+
+    Movie(const std::string& id, const std::string& t, const std::string& ps, const std::string& tg, const std::string& sp, const std::string& ss)
+            : imdb_id(id), title(t), plot_synopsis(ps), tags(tg), split(sp), synopsis_source(ss), liked(false), watchLater(false) {}
 };
 
 // Funcion para quitar espacios antes o despues
@@ -67,6 +73,8 @@ Movie parseLine(const std::string& line) {
         movie.tags = fields[3];
         movie.split = fields[4];
         movie.synopsis_source = fields[5];
+        movie.liked = false;
+        movie.watchLater = false;
     }
 
     return movie;
@@ -129,5 +137,6 @@ std::vector<Movie> searchMovies(const std::vector<Movie>& movies, const std::str
     }
     return results;
 }
+
 
 #endif //UTECFLIX_ALGORITMODEBÚSQUEDA_H

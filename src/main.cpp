@@ -1,39 +1,60 @@
-#include "MovieDatabase.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include "AlgoritmoDeBúsqueda.h"
+#include "seleccion_y_likes.h"
+
+using namespace std;
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
-        std::cerr << "Como usar: " << argv[0] << " <csv_name> <keyword>" << std::endl;
+        cerr << "Como usar: " << argv[0] << " <csv_name> <keyword>" << endl;
         return 1;
     }
 
-    std::string filename = argv[1];
-    std::string keyword = argv[2];
+    string filename = argv[1];
+    string keyword = argv[2];
 
-    // Obtener la instancia Singleton de MovieDatabase
-    MovieDatabase* database = MovieDatabase::getInstance();
+    vector<Movie> movies = readCSV(filename);
 
-    // Cargar las películas desde el archivo CSV
-    database->loadMovies(filename);
+    vector<Movie> results = searchMovies(movies, keyword);
 
-    // Buscar películas
-    std::vector<Movie> results = database->search(keyword);
-
-    std::ofstream outfile("output.txt");
+    ofstream outfile("output.txt");
 
     if (results.empty()) {
-        outfile << "No se encontraron resultados." << std::endl;
+        outfile << "No se encontraron resultados." << endl;
     } else {
-        outfile << "Resultados de \"" << keyword << "\":" << std::endl;
-        for (const auto& movie : results) {
-            outfile << "IMDB ID: " << movie.imdb_id << std::endl;
-            outfile << "Title: " << movie.title << std::endl;
-            outfile << "Plot Synopsis: " << movie.plot_synopsis << std::endl;
-            outfile << "Tags: " << movie.tags << std::endl;
-            outfile << "Split: " << movie.split << std::endl;
-            outfile << "Synopsis Source: " << movie.synopsis_source << std::endl;
-            outfile << "-----------------------------" << std::endl;
+        outfile << "Resultados de \"" << keyword << "\":" << endl;
+        for (size_t i = 0; i < results.size(); ++i) {
+            outfile << "Opción " << i + 1 << ":" << endl;
+            outfile << "IMDB ID: " << results[i].imdb_id << endl;
+            outfile << "Title: " << results[i].title << endl;
+            outfile << "Tags: " << results[i].tags << endl;
+            outfile << "-----------------------------" << endl;
+        }
+
+        int choice;
+        cout << "Selecciona una película (1-" << results.size() << "): ";
+        cin >> choice;
+
+        if (choice > 0 && choice <= results.size()) {
+            displayMovieDetails(results[choice - 1]);
+        } else {
+            cout << "Opción inválida." << endl;
         }
     }
+
+    // Guardar las películas marcadas como 'liked' y 'watch later' en un archivo? o donde los guardo xdd
+    ofstream likedWatchLaterFile("liked_watch_later.txt");
+    for (const auto& movie : movies) {
+        if (movie.liked) {
+            likedWatchLaterFile << "Liked: " << movie.title << endl;
+        }
+        if (movie.watchLater) {
+            likedWatchLaterFile << "Watch Later: " << movie.title << endl;
+        }
+    }
+    likedWatchLaterFile.close();
 
     outfile.close();
 
