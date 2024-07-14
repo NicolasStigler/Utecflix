@@ -9,9 +9,9 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <string>
 #include <regex>
 #include <algorithm>
+
 
 struct Movie {
     std::string imdb_id;
@@ -57,6 +57,7 @@ std::vector<std::string> splitCSVLine(const std::string& line) {
         }
     }
     result.push_back(trim(current_field));
+
     return result;
 }
 

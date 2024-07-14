@@ -2,15 +2,13 @@
 // Created by tamyk on 7/12/2024.
 //
 
-#ifndef UTECFLIX_SELECCION_Y_LIKES_H
-#define UTECFLIX_SELECCION_Y_LIKES_H
+#ifndef UTECFLIX_SELECCIONYLIKES_H
+#define UTECFLIX_SELECCIONYLIKES_H
 
 #include <iostream>
-#include <vector>
 #include "AlgoritmoDeBúsqueda.h"
 #include "MovieDatabase.h"
 
-using namespace std;
 void saveToFile(const std::string& imdb_id, const std::string& filename) {
     std::ofstream file(filename, std::ios_base::app);
     if (file.is_open()) {
@@ -21,13 +19,14 @@ void saveToFile(const std::string& imdb_id, const std::string& filename) {
         std::cerr << "No se pudo abrir el archivo " << filename << " para escritura." << std::endl;
     }
 }
+
 // Función para mostrar detalles de una película y permitir marcarla como 'liked' o 'watch later'
 void displayMovieDetails(Movie& movie) {
-    cout << "IMDB ID: " << movie.imdb_id << endl;
-    cout << "Title: " << movie.title << endl;
-    cout << "Synopsis: " << movie.plot_synopsis << endl;
-    cout << "Tags: " << movie.tags << endl;
-    cout << "Synopsis source:" << movie.synopsis_source << endl;
+    std::cout << "IMDB ID: " << movie.imdb_id << std::endl;
+    std::cout << "Title: " << movie.title << std::endl;
+    std::cout << "Synopsis: " << movie.plot_synopsis << std::endl;
+    std::cout << "Tags: " << movie.tags << std::endl;
+    std::cout << "Synopsis source: " << movie.synopsis_source << std::endl;
 
     char likeChoice;
     std::cout << "Te gusta esta pelicula? (y/n): ";
@@ -51,5 +50,4 @@ void displayMovieDetails(Movie& movie) {
     std::cout << "-----------------------------" << std::endl;
 }
 
-
-#endif //UTECFLIX_SELECCION_Y_LIKES_H
+#endif //UTECFLIX_SELECCIONYLIKES_H

@@ -1,8 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include "AlgoritmoDeBúsqueda.h"
-#include "seleccion_y_likes.h"
+#include "MovieDatabase.h"
+#include "SeleccionYLikes.h"
 
 // Función para mostrar películas marcadas como 'liked' desde el archivo
 void showLikedMovies(const std::string& filename) {
@@ -41,7 +40,6 @@ void showWatchLaterMovies(const std::string& filename) {
     file.close();
 }
 
-
 int main() {
     std::string filename = "mpst_full_data.csv";
     std::string keyword;
@@ -49,9 +47,14 @@ int main() {
     std::cout << "Ingrese la palabra a buscar: ";
     std::cin >> keyword;
 
-    std::vector<Movie> movies = readCSV(filename);
+    // Obtener la instancia Singleton de MovieDatabase
+    MovieDatabase* database = MovieDatabase::getInstance();
 
-    std::vector<Movie> results = searchMovies(movies, keyword);
+    // Cargar las películas desde el archivo CSV
+    database->loadMovies(filename);
+
+    // Buscar películas
+    std::vector<Movie> results = database->search(keyword);
 
     std::ofstream outfile("output.txt");
 
@@ -59,7 +62,7 @@ int main() {
         outfile << "No se encontraron resultados." << std::endl;
     } else {
         outfile << "Resultados de \"" << keyword << "\":" << std::endl;
-        for (size_t i = 0; i < results.size(); ++i) {
+        for (size_t i = 0; i < results.size(); i++) {
             outfile << "Opción " << i + 1 << ":" << std::endl;
             outfile << "IMDB ID: " << results[i].imdb_id << std::endl;
             outfile << "Title: " << results[i].title << std::endl;
@@ -68,13 +71,13 @@ int main() {
         }
 
         int choice;
-        cout << "Selecciona una pelicula (1-" << results.size() << "): ";
-        cin >> choice;
+        std::cout << "Selecciona una pelicula (1-" << results.size() << "): ";
+        std::cin >> choice;
 
         if (choice > 0 && choice <= results.size()) {
             displayMovieDetails(results[choice - 1]);
         } else {
-            cout << "Opcion invalida." << endl;
+            std::cout << "Opcion invalida." << std::endl;
         }
     }
 
@@ -89,7 +92,7 @@ int main() {
     char showWatchLaterChoice;
     std::cin >> showWatchLaterChoice;
     if (showWatchLaterChoice == 'y' || showWatchLaterChoice == 'Y') {
-        showWatchLaterMovies("wachLater.txt");
+        showWatchLaterMovies("watchLater.txt");
     }
 
     outfile.close();

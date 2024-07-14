@@ -8,7 +8,6 @@
 
 #include "AlgoritmoDeBúsqueda.h"
 
-
 class MovieDatabase {
 private:
     static MovieDatabase* instance;
