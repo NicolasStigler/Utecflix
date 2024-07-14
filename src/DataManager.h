@@ -1,12 +1,9 @@
 #ifndef DATAMANAGER_H
 #define DATAMANAGER_H
 
-#include <string>
 #include <vector>
 #include <unordered_map>
 #include "Pelicula.h"
-
-using namespace std;
 
 class DataManager {
 public:
@@ -15,22 +12,22 @@ public:
         return instance;
     }
 
-    void cargarDatos(const string& rutaArchivo);
+    void cargarDatos(const std::string& rutaArchivo);
     void guardarPreferencias();
     void cargarPreferencias();
 
-    vector<Pelicula*> getVerMasTarde() const;
-    vector<Pelicula*> getLikes() const;
+    std::vector<Pelicula*> getVerMasTarde() const;
+    std::vector<Pelicula*> getLikes() const;
 
-    vector<Pelicula>::iterator begin();
-    vector<Pelicula>::iterator end();
+    std::vector<Pelicula>::iterator begin();
+    std::vector<Pelicula>::iterator end();
 
 private:
     DataManager() = default;
-    vector<Pelicula> peliculas;
-    unordered_map<string, Pelicula*> peliculasIndexadas;
-    vector<Pelicula*> verMasTarde;
-    vector<Pelicula*> likes;
+    std::vector<Pelicula> peliculas;
+    std::unordered_map<std::string, Pelicula*> peliculasIndexadas;
+    std::vector<Pelicula*> verMasTarde;
+    std::vector<Pelicula*> likes;
 };
 
 #endif // DATAMANAGER_H

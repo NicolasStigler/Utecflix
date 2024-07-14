@@ -25,8 +25,8 @@ void mostrarRecomendaciones() {
 }
 
 int main() {
-    // Cargar las películas desde el archivo CSV
-    string rutaArchivo = "mpst_full_data.csv" ;
+    // Ajusta la ruta del archivo según sea necesario
+    string rutaArchivo = "mpst_full_data.csv";
     cout << "Intentando abrir el archivo: " << rutaArchivo << endl;
     DataManager::getInstance().cargarDatos(rutaArchivo);
 
