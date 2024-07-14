@@ -6,20 +6,57 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        cerr << "Como usar: " << argv[0] << " <csv_name> <keyword>" << endl;
-        return 1;
+// Función para mostrar películas marcadas como 'liked' desde el archivo
+void showLikedMovies(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "No se pudo abrir el archivo " << filename << std::endl;
+        return;
     }
 
-    string filename = argv[1];
-    string keyword = argv[2];
+    std::string imdb_id;
+    std::cout << "Peliculas marcadas como 'liked':" << std::endl;
+    while (std::getline(file, imdb_id)) {
+        std::cout << "IMDB ID: " << imdb_id << std::endl;
+        std::cout << "-----------------------------" << std::endl;
+    }
 
-    vector<Movie> movies = readCSV(filename);
+    file.close();
+}
 
-    vector<Movie> results = searchMovies(movies, keyword);
+// Función para mostrar películas marcadas como 'watch later' desde el archivo
+void showWatchLaterMovies(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "No se pudo abrir el archivo " << filename << std::endl;
+        return;
+    }
 
-    ofstream outfile("output.txt");
+    std::string imdb_id;
+    std::cout << "Peliculas marcadas para 'ver mas tarde':" << std::endl;
+    while (std::getline(file, imdb_id)) {
+
+        std::cout << "IMDB ID: " << imdb_id << std::endl;
+        std::cout << "-----------------------------" << std::endl;
+    }
+
+    file.close();
+}
+
+
+int main(int argc, char* argv[]) {
+    std::string filename = "mpst_full_data.csv";
+    std::string keyword;
+
+    std::cout << "Ingrese la palabra a buscar: ";
+    std::cin >> keyword;
+
+    std::vector<Movie> movies = readCSV(filename);
+
+    std::vector<Movie> results = searchMovies(movies, keyword);
+
+    std::ofstream outfile("output.txt");
+
 
     if (results.empty()) {
         outfile << "No se encontraron resultados." << endl;
@@ -34,27 +71,29 @@ int main(int argc, char* argv[]) {
         }
 
         int choice;
-        cout << "Selecciona una película (1-" << results.size() << "): ";
+        cout << "Selecciona una pelicula (1-" << results.size() << "): ";
         cin >> choice;
 
         if (choice > 0 && choice <= results.size()) {
             displayMovieDetails(results[choice - 1]);
         } else {
-            cout << "Opción inválida." << endl;
+            cout << "Opcion invalida." << endl;
         }
     }
 
-    // Guardar las películas marcadas como 'liked' y 'watch later' en un archivo? o donde los guardo xdd
-    ofstream likedWatchLaterFile("liked_watch_later.txt");
-    for (const auto& movie : movies) {
-        if (movie.liked) {
-            likedWatchLaterFile << "Liked: " << movie.title << endl;
-        }
-        if (movie.watchLater) {
-            likedWatchLaterFile << "Watch Later: " << movie.title << endl;
-        }
+    std::cout << "Deseas ver tus peliculas marcadas como 'liked'? (y/n)" ;
+    char showLikedChoice;
+    std::cin >> showLikedChoice;
+    if (showLikedChoice == 'y' || showLikedChoice == 'Y') {
+        showLikedMovies("like.txt");
     }
-    likedWatchLaterFile.close();
+
+    std::cout << "Deseas ver tus películas marcadas para 'ver más tarde'? (y/n)";
+    char showWatchLaterChoice;
+    std::cin >> showWatchLaterChoice;
+    if (showWatchLaterChoice == 'y' || showWatchLaterChoice == 'Y') {
+        showWatchLaterMovies("wachLater.txt");
+    }
 
     outfile.close();
 
