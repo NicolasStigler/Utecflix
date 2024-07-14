@@ -1,41 +1,46 @@
-#include "MovieDatabase.h"
+#include <iostream>
+#include "DataManager.h"
+#include "Recommender.h"
 
-int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        std::cerr << "Como usar: " << argv[0] << " <csv_name> <keyword>" << std::endl;
-        return 1;
+using namespace std;
+
+void mostrarVerMasTarde() {
+    const auto& verMasTarde = DataManager::getInstance().getVerMasTarde();
+    cout << "Peliculas en Ver Mas Tarde:\n";
+    for (const auto& pelicula : verMasTarde) {
+        cout << "Titulo: " << pelicula->getTitulo() << "\n";
+        cout << "Sinopsis: " << pelicula->getSinopsis() << "\n\n";
     }
+}
 
-    std::string filename = argv[1];
-    std::string keyword = argv[2];
+void mostrarRecomendaciones() {
+    Recommender recommender;
+    const auto& likes = DataManager::getInstance().getLikes();
+    auto recomendaciones = recommender.recomendarPeliculas(likes);
+    cout << "Recomendaciones basadas en tus gustos:\n";
+    for (const auto& pelicula : recomendaciones) {
+        cout << "Titulo: " << pelicula->getTitulo() << "\n";
+        cout << "Sinopsis: " << pelicula->getSinopsis() << "\n\n";
+    }
+}
 
-    // Obtener la instancia Singleton de MovieDatabase
-    MovieDatabase* database = MovieDatabase::getInstance();
-
+int main() {
     // Cargar las películas desde el archivo CSV
-    database->loadMovies(filename);
+    string rutaArchivo = "mpst_full_data.csv" ;
+    cout << "Intentando abrir el archivo: " << rutaArchivo << endl;
+    DataManager::getInstance().cargarDatos(rutaArchivo);
 
-    // Buscar películas
-    std::vector<Movie> results = database->search(keyword);
+    // Cargar preferencias del usuario
+    DataManager::getInstance().cargarPreferencias();
 
-    std::ofstream outfile("output.txt");
+    // Mostrar películas en "Ver Más Tarde"
+    mostrarVerMasTarde();
 
-    if (results.empty()) {
-        outfile << "No se encontraron resultados." << std::endl;
-    } else {
-        outfile << "Resultados de \"" << keyword << "\":" << std::endl;
-        for (const auto& movie : results) {
-            outfile << "IMDB ID: " << movie.imdb_id << std::endl;
-            outfile << "Title: " << movie.title << std::endl;
-            outfile << "Plot Synopsis: " << movie.plot_synopsis << std::endl;
-            outfile << "Tags: " << movie.tags << std::endl;
-            outfile << "Split: " << movie.split << std::endl;
-            outfile << "Synopsis Source: " << movie.synopsis_source << std::endl;
-            outfile << "-----------------------------" << std::endl;
-        }
-    }
+    // Mostrar recomendaciones
+    mostrarRecomendaciones();
 
-    outfile.close();
+    // Guardar preferencias al finalizar el programa
+    DataManager::getInstance().guardarPreferencias();
 
     return 0;
 }

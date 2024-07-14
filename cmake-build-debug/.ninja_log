@@ -1,4 +1,23 @@
-# ninja log v6
-3	290	7425305049231992	build.ninja	69f6cc8ab5dcec96
-2	1965	7425286353339551	CMakeFiles/Utecflix.dir/src/main.cpp.obj	11ba83e68f2fe5f0
+# ninja log v5
+3	290	7426344777228811	build.ninja	69f6cc8ab5dcec96
 1970	3479	7425286373021428	Utecflix.exe	ab40612a3804cc8c
+9	742	7426347465009177	CMakeFiles/main.dir/src/main.cpp.obj	a2ade2c2dfef85c1
+0	763	7426347465236574	CMakeFiles/main.dir/src/DataManager.cpp.obj	e479e7b20dc0869e
+763	993	7426347467456393	main.exe	6e64405fd51ffa62
+3	696	7426349554126500	CMakeFiles/main.dir/src/DataManager.cpp.obj	e479e7b20dc0869e
+3	684	7426349749280100	CMakeFiles/main.dir/src/DataManager.cpp.obj	e479e7b20dc0869e
+685	897	7426349751337137	main.exe	6e64405fd51ffa62
+3	748	7426349940235921	CMakeFiles/main.dir/src/DataManager.cpp.obj	e479e7b20dc0869e
+10	777	7426349940529275	CMakeFiles/main.dir/src/main.cpp.obj	a2ade2c2dfef85c1
+3	751	7426350204320630	CMakeFiles/main.dir/src/DataManager.cpp.obj	e479e7b20dc0869e
+753	971	7426350206463575	main.exe	6e64405fd51ffa62
+3	780	7426352262646400	CMakeFiles/main.dir/src/main.cpp.obj	a2ade2c2dfef85c1
+780	998	7426352264733081	main.exe	6e64405fd51ffa62
+3	715	7426354647183401	CMakeFiles/main.dir/src/main.cpp.obj	a2ade2c2dfef85c1
+716	945	7426354649418313	main.exe	6e64405fd51ffa62
+3	653	7426355080371251	CMakeFiles/main.dir/src/main.cpp.obj	a2ade2c2dfef85c1
+654	863	7426355082406760	main.exe	6e64405fd51ffa62
+3	676	7426355274907784	CMakeFiles/main.dir/src/main.cpp.obj	a2ade2c2dfef85c1
+677	894	7426355277023517	main.exe	6e64405fd51ffa62
+3	673	7426355393005409	CMakeFiles/main.dir/src/main.cpp.obj	a2ade2c2dfef85c1
+674	887	7426355395106424	main.exe	6e64405fd51ffa62
