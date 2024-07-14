@@ -13,6 +13,8 @@ class MovieDatabase {
 private:
     static MovieDatabase* instance;
     std::vector<Movie> movies;
+    std::vector<Movie> likedMovies;
+    std::vector<Movie> watchLaterMovies;
 
     // Constructor privado
     MovieDatabase() {}
@@ -41,6 +43,37 @@ public:
         return searchMovies(movies, keyword);
     }
 
+    // Marcar una película como 'liked'
+    void markAsLiked(const std::string& imdb_id) {
+        for (auto& movie : movies) {
+            if (movie.imdb_id == imdb_id) {
+                movie.liked = true;
+                likedMovies.push_back(movie);
+                return;
+            }
+        }
+    }
+
+    // Marcar una película como 'watch later'
+    void markAsWatchLater(const std::string& imdb_id) {
+        for (auto& movie : movies) {
+            if (movie.imdb_id == imdb_id) {
+                movie.watchLater = true;
+                watchLaterMovies.push_back(movie);
+                return;
+            }
+        }
+    }
+
+    // Obtener todas las películas marcadas como 'liked'
+    std::vector<Movie> getLikedMovies() {
+        return likedMovies;
+    }
+
+    // Obtener todas las películas marcadas como 'watch later'
+    std::vector<Movie> getWatchLaterMovies() {
+        return watchLaterMovies;
+    }
 
 };
 

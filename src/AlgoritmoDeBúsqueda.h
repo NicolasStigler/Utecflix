@@ -13,7 +13,6 @@
 #include <regex>
 #include <algorithm>
 
-
 struct Movie {
     std::string imdb_id;
     std::string title;
@@ -21,6 +20,13 @@ struct Movie {
     std::string tags;
     std::string split;
     std::string synopsis_source;
+    bool liked;
+    bool watchLater;
+
+    Movie() : liked(false), watchLater(false) {}
+
+    Movie(const std::string& id, const std::string& t, const std::string& ps, const std::string& tg, const std::string& sp, const std::string& ss)
+        : imdb_id(id), title(t), plot_synopsis(ps), tags(tg), split(sp), synopsis_source(ss), liked(false), watchLater(false) {}
 };
 
 // Funcion para quitar espacios antes o despues
@@ -51,7 +57,6 @@ std::vector<std::string> splitCSVLine(const std::string& line) {
         }
     }
     result.push_back(trim(current_field));
-
     return result;
 }
 
@@ -67,6 +72,8 @@ Movie parseLine(const std::string& line) {
         movie.tags = fields[3];
         movie.split = fields[4];
         movie.synopsis_source = fields[5];
+        movie.liked = false;
+        movie.watchLater = false;
     }
 
     return movie;
@@ -108,11 +115,12 @@ std::vector<Movie> readCSV(const std::string& filename) {
 
 // Funcion para la busqueda
 bool containsCaseInsensitive(const std::string& text, const std::string& keyword) {
-    std::string text_lower = text;
-    std::string keyword_lower = keyword;
-    std::transform(text_lower.begin(), text_lower.end(), text_lower.begin(), ::tolower);
-    std::transform(keyword_lower.begin(), keyword_lower.end(), keyword_lower.begin(), ::tolower);
-    return text_lower.find(keyword_lower) != std::string::npos;
+    auto it = std::search(
+        text.begin(), text.end(),
+        keyword.begin(), keyword.end(),
+        [](char ch1, char ch2) { return std::tolower(ch1) == std::tolower(ch2); }
+    );
+    return it != text.end();
 }
 
 // Funcion para buscar peliculas en las variables title, plot synopsis y tags
