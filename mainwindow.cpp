@@ -3,6 +3,7 @@
 #include "SeleccionYLikes.h"
 #include <QMessageBox>
 #include <QStringListModel>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     database->loadMovies("mpst_full_data.csv");
 
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, &MainWindow::on_tabWidget_currentChanged);
+    connect(ui->resultsListView, &QListView::clicked, this, &MainWindow::handleMovieClick);
+    connect(ui->likeBtn, &QPushButton::clicked, this, &MainWindow::handleLikeButtonClick);
+    connect(ui->watchLaterBtn, &QPushButton::clicked, this, &MainWindow::handleWatchLaterButtonClick);
 }
 
 MainWindow::~MainWindow()
@@ -60,5 +64,55 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         // Limpiar los modelos de las listas liked y watch later
         ui->likedListView->setModel(new QStringListModel());
         ui->watchLaterListView->setModel(new QStringListModel());
+    }
+}
+
+void MainWindow::displayMovieDetails(const Movie& movie) {
+    QStringList details;
+    details << "IMDB ID: " + QString::fromStdString(movie.imdb_id)
+            << "Title: " + QString::fromStdString(movie.title)
+            << "Plot Synopsis: " + QString::fromStdString(movie.plot_synopsis)
+            << "Tags: " + QString::fromStdString(movie.tags)
+            << "Split: " + QString::fromStdString(movie.split)
+            << "Synopsis Source: " + QString::fromStdString(movie.synopsis_source);
+
+    ui->infoListView->setModel(new QStringListModel(details));
+}
+
+void MainWindow::handleMovieClick(const QModelIndex &index) {
+    QString movieTitle = index.data(Qt::DisplayRole).toString();
+    currentMovie = database->getMovieByTitle(movieTitle.toStdString());
+
+    if (currentMovie) {
+        QStringList movieDetails;
+        movieDetails << "IMDB ID: " + QString::fromStdString(currentMovie->imdb_id);
+        movieDetails << "Title: " + QString::fromStdString(currentMovie->title);
+        movieDetails << "Plot Synopsis: " + QString::fromStdString(currentMovie->plot_synopsis);
+        movieDetails << "Tags: " + QString::fromStdString(currentMovie->tags);
+        movieDetails << "Split: " + QString::fromStdString(currentMovie->split);
+        movieDetails << "Synopsis Source: " + QString::fromStdString(currentMovie->synopsis_source);
+        ui->infoListView->setModel(new QStringListModel(movieDetails));
+    } else {
+        QMessageBox::critical(this, "Error", "No se pudo encontrar la película seleccionada.");
+    }
+}
+
+void MainWindow::handleLikeButtonClick()
+{
+    if (currentMovie) {
+        database->markAsLiked(currentMovie->imdb_id);
+        QMessageBox::information(this, "Liked", "La película ha sido marcada como 'liked'.");
+    } else {
+        QMessageBox::critical(this, "Error", "No hay ninguna película seleccionada.");
+    }
+}
+
+void MainWindow::handleWatchLaterButtonClick()
+{
+    if (currentMovie) {
+        database->markAsWatchLater(currentMovie->imdb_id);
+        QMessageBox::information(this, "Watch Later", "La película ha sido marcada para 'ver más tarde'.");
+    } else {
+        QMessageBox::critical(this, "Error", "No hay ninguna película seleccionada.");
     }
 }

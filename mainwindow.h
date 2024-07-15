@@ -19,10 +19,15 @@ public:
 private slots:
     void on_searchButton_clicked();
     void on_tabWidget_currentChanged(int index);
+    void handleMovieClick(const QModelIndex &index);
+    void displayMovieDetails(const Movie& movie);
+    void handleLikeButtonClick();
+    void handleWatchLaterButtonClick();
 
 private:
     Ui::MainWindow *ui;
     MovieDatabase* database;
+    std::optional<Movie> currentMovie;
 };
 
 #endif // MAINWINDOW_H

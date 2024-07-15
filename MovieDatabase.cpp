@@ -15,11 +15,22 @@ std::vector<Movie> MovieDatabase::search(const std::string& keyword) {
     return searchMovies(movies, keyword);
 }
 
+void MovieDatabase::saveToFile(const std::string& imdb_id, const std::string& filename) {
+    std::ofstream file(filename, std::ios::app);
+    if (file.is_open()) {
+        file << imdb_id << std::endl;
+        file.close();
+    } else {
+        std::cerr << "Error opening file " << filename << std::endl;
+    }
+}
+
 void MovieDatabase::markAsLiked(const std::string& imdb_id) {
     for (auto& movie : movies) {
         if (movie.imdb_id == imdb_id) {
             movie.liked = true;
             likedMovies.push_back(movie);
+            saveToFile(imdb_id, "like.txt");
             return;
         }
     }
@@ -30,6 +41,7 @@ void MovieDatabase::markAsWatchLater(const std::string& imdb_id) {
         if (movie.imdb_id == imdb_id) {
             movie.watchLater = true;
             watchLaterMovies.push_back(movie);
+            saveToFile(imdb_id, "watchLater.txt");
             return;
         }
     }
@@ -73,3 +85,12 @@ std::optional<Movie> MovieDatabase::getMovieById(const std::string& imdb_id) {
     return std::nullopt;
 }
 
+std::optional<Movie> MovieDatabase::getMovieByTitle(const std::string& title) {
+    auto it = std::find_if(movies.begin(), movies.end(), [&title](const Movie& movie) {
+        return movie.title == title;
+    });
+    if (it != movies.end()) {
+        return *it;
+    }
+    return std::nullopt;
+}

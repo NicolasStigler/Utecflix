@@ -31,6 +31,9 @@ public:
     QLineEdit *searchLineEdit;
     QPushButton *searchButton;
     QListView *resultsListView;
+    QListView *infoListView;
+    QPushButton *likeBtn;
+    QPushButton *watchLaterBtn;
     QWidget *Liked;
     QListView *likedListView;
     QWidget *WatchLater;
@@ -60,6 +63,15 @@ public:
         resultsListView->setObjectName("resultsListView");
         resultsListView->setGeometry(QRect(10, 50, 391, 431));
         resultsListView->setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
+        infoListView = new QListView(Search);
+        infoListView->setObjectName("infoListView");
+        infoListView->setGeometry(QRect(415, 50, 351, 391));
+        likeBtn = new QPushButton(Search);
+        likeBtn->setObjectName("likeBtn");
+        likeBtn->setGeometry(QRect(490, 440, 94, 36));
+        watchLaterBtn = new QPushButton(Search);
+        watchLaterBtn->setObjectName("watchLaterBtn");
+        watchLaterBtn->setGeometry(QRect(600, 440, 94, 36));
         tabWidget->addTab(Search, QString());
         Liked = new QWidget();
         Liked->setObjectName("Liked");
@@ -96,6 +108,8 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         searchButton->setText(QCoreApplication::translate("MainWindow", "Search", nullptr));
+        likeBtn->setText(QCoreApplication::translate("MainWindow", "Like", nullptr));
+        watchLaterBtn->setText(QCoreApplication::translate("MainWindow", "WatchLater", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Search), QCoreApplication::translate("MainWindow", "Search", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Liked), QCoreApplication::translate("MainWindow", "Liked", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(WatchLater), QCoreApplication::translate("MainWindow", "WatchLater", nullptr));

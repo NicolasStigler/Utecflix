@@ -66,6 +66,42 @@
        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
       </property>
      </widget>
+     <widget class="QListView" name="infoListView">
+      <property name="geometry">
+       <rect>
+        <x>415</x>
+        <y>50</y>
+        <width>351</width>
+        <height>391</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="likeBtn">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>440</y>
+        <width>94</width>
+        <height>36</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Like</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="watchLaterBtn">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>440</y>
+        <width>94</width>
+        <height>36</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>WatchLater</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="Liked">
      <attribute name="title">

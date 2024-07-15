@@ -7,6 +7,4 @@
 
 void saveToFile(const std::string& imdb_id, const std::string& filename);
 
-void displayMovieDetails(Movie& movie);
-
 #endif //UTECFLIX_SELECCIONYLIKES_H

@@ -3,6 +3,7 @@
 
 #include "AlgoritmoDeBúsqueda.h"
 #include <optional>
+#include <fstream>
 
 class MovieDatabase {
 private:
@@ -34,6 +35,8 @@ public:
     // Buscar películas
     std::vector<Movie> search(const std::string& keyword);
 
+    std::optional<Movie> getMovieByTitle(const std::string& title);
+
     // Marcar una película como 'liked'
     void markAsLiked(const std::string& imdb_id);
 
@@ -45,6 +48,8 @@ public:
 
     // Obtener todas las películas marcadas como 'watch later'
     std::vector<Movie> getWatchLaterMovies();
+
+    void saveToFile(const std::string& imdb_id, const std::string& filename);
 };
 
 #endif //UTECFLIX_MOVIESDATABSE_H
