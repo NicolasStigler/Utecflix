@@ -44,14 +44,14 @@ int main() {
     std::string filename = "mpst_full_data.csv";
     std::string keyword;
 
-    std::cout << "Ingrese la palabra a buscar: ";
-    std::cin >> keyword;
-
     // Obtener la instancia Singleton de MovieDatabase
     MovieDatabase* database = MovieDatabase::getInstance();
 
     // Cargar las películas desde el archivo CSV
     database->loadMovies(filename);
+
+    std::cout << "Ingrese la palabra a buscar: ";
+    std::cin >> keyword;
 
     // Buscar películas
     std::vector<Movie> results = database->search(keyword);

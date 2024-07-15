@@ -12,7 +12,6 @@
 #include <regex>
 #include <algorithm>
 
-
 struct Movie {
     std::string imdb_id;
     std::string title;
