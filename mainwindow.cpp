@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "SeleccionYLikes.h"
+#include "Recommender.h"
 #include <QMessageBox>
 #include <QStringListModel>
 #include <QPushButton>
@@ -45,13 +46,26 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 {
     // Verifica si la pestaña "Liked" está activa
     if (index == ui->tabWidget->indexOf(ui->Liked)) {
-        // Cargar y mostrar las películas liked
+        // Cargar las películas liked
         std::vector<Movie> likedMovies = database->getLikedMovies();
         QStringList likedList;
         for (const auto& movie : likedMovies) {
             likedList << QString::fromStdString(movie.title);
         }
-        ui->likedListView->setModel(new QStringListModel(likedList));
+
+        // Generar y mostrar recomendaciones basadas en las películas liked
+        Recommender recommender;
+        std::vector<Movie> recommendedMovies = recommender.recommendMovies(likedMovies);
+
+        if (recommendedMovies.empty()) {
+            ui->likedListView->setModel(new QStringListModel());
+        } else {
+            QStringList recommendationsList;
+            for (const auto& movie : recommendedMovies) {
+                recommendationsList << QString::fromStdString(movie.title);
+            }
+            ui->likedListView->setModel(new QStringListModel(recommendationsList));
+        }
     } else if (index == ui->tabWidget->indexOf(ui->WatchLater)) {
         // Cargar y mostrar las películas watch later
         std::vector<Movie> watchLaterMovies = database->getWatchLaterMovies();

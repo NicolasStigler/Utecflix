@@ -22,6 +22,10 @@ struct Movie {
 
     Movie(const std::string& id, const std::string& t, const std::string& ps, const std::string& tg, const std::string& sp, const std::string& ss)
         : imdb_id(id), title(t), plot_synopsis(ps), tags(tg), split(sp), synopsis_source(ss), liked(false), watchLater(false) {}
+
+    bool operator==(const Movie& other) const {
+        return imdb_id == other.imdb_id;
+    }
 };
 
 // Declaracion de funciones
