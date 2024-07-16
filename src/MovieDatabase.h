@@ -1,18 +1,18 @@
-//
-// Created by sergi on 7/12/2024.
-//
-// Definicion de la estructura para guardar la data de la pelicula
-
 #ifndef UTECFLIX_MOVIESDATABSE_H
 #define UTECFLIX_MOVIESDATABSE_H
 
 #include "AlgoritmoDeBúsqueda.h"
-
+#include <optional>
+#include <fstream>
 
 class MovieDatabase {
 private:
     static MovieDatabase* instance;
+    std::vector<Movie> getMoviesFromFile(const std::string& filename);
+    std::optional<Movie> getMovieById(const std::string& imdb_id);
     std::vector<Movie> movies;
+    std::vector<Movie> likedMovies;
+    std::vector<Movie> watchLaterMovies;
 
     // Constructor privado
     MovieDatabase() {}
@@ -27,23 +27,29 @@ public:
     }
 
     // Cargar películas desde un archivo CSV
-    void loadMovies(const std::string& filename) {
-        movies = readCSV(filename);
-    }
+    void loadMovies(const std::string& filename);
 
     // Obtener las películas
-    std::vector<Movie> getMovies() {
-        return movies;
-    }
+    std::vector<Movie> getMovies();
 
     // Buscar películas
-    std::vector<Movie> search(const std::string& keyword) {
-        return searchMovies(movies, keyword);
-    }
+    std::vector<Movie> search(const std::string& keyword);
 
+    std::optional<Movie> getMovieByTitle(const std::string& title);
 
+    // Marcar una película como 'liked'
+    void markAsLiked(const std::string& imdb_id);
+
+    // Marcar una película como 'watch later'
+    void markAsWatchLater(const std::string& imdb_id);
+
+    // Obtener todas las películas marcadas como 'liked'
+    std::vector<Movie> getLikedMovies();
+
+    // Obtener todas las películas marcadas como 'watch later'
+    std::vector<Movie> getWatchLaterMovies();
+
+    void saveToFile(const std::string& imdb_id, const std::string& filename);
 };
-
-MovieDatabase* MovieDatabase::instance = nullptr;
 
 #endif //UTECFLIX_MOVIESDATABSE_H

@@ -1,0 +1,9 @@
+/home/mango/Documents/c++/GUI/Utecflix/build/Desktop-Debug/CMakeFiles/Utecflix.dir
+/home/mango/Documents/c++/GUI/Utecflix/build/Desktop-Debug/CMakeFiles/edit_cache.dir
+/home/mango/Documents/c++/GUI/Utecflix/build/Desktop-Debug/CMakeFiles/rebuild_cache.dir
+/home/mango/Documents/c++/GUI/Utecflix/build/Desktop-Debug/CMakeFiles/list_install_components.dir
+/home/mango/Documents/c++/GUI/Utecflix/build/Desktop-Debug/CMakeFiles/install.dir
+/home/mango/Documents/c++/GUI/Utecflix/build/Desktop-Debug/CMakeFiles/install/local.dir
+/home/mango/Documents/c++/GUI/Utecflix/build/Desktop-Debug/CMakeFiles/install/strip.dir
+/home/mango/Documents/c++/GUI/Utecflix/build/Desktop-Debug/CMakeFiles/Utecflix_autogen_timestamp_deps.dir
+/home/mango/Documents/c++/GUI/Utecflix/build/Desktop-Debug/CMakeFiles/Utecflix_autogen.dir
