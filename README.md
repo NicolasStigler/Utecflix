@@ -26,6 +26,10 @@ El objetivo del proyecto final es implementar una plataforma de *streaming*. Un 
 
 ## [Rubrica](https://docs.google.com/spreadsheets/d/1f8wpmsMNIGNqjCFEh8ItBrdrTZbJoKIX/edit?gid=1847365699#gid=1847365699)
 
+## IMPORTANTE: El código final se encuentra en la rama GUI.
+
+## LINK DEL VIDEO: https://drive.google.com/file/d/1ar67L1Qdj9YW0qB7gYQH05qiVbt6HAk6/view?usp=drive_link
+
 ## Fuentes Bibliográficas:
 * GeeksforGeeks. (s.f.). C++ Programming. Recuperado el 15 de julio de 2024, de https://www.geeksforgeeks.org/c-plus-plus/
 * W3Schools. (s.f.). C++ Tutorial. Recuperado el 15 de julio de 2024, de https://www.w3schools.com/cpp/
